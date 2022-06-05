@@ -18,8 +18,6 @@ const slice = ref(route.query.slice?.toString())
 const pageNumber = ref(10)
 
 const searchData = ref<SearchData>()
-const keywords = computed(() => (searchData.value && searchData.value['分词']) || [keyword.value])
-
 const router = useRouter()
 
 useHead({
@@ -64,8 +62,8 @@ watch(() => searchStore.savedKeyword, () => {
  * 显示的页数
  */
 const displayedPages = computed(() => {
-  if (searchData.value && searchData.value['总数']) {
-    const pages = Math.ceil(searchData.value['总数'] / pageNumber.value)
+  if (searchData.value && searchData.value['total']) {
+    const pages = Math.ceil(searchData.value['total'] / pageNumber.value)
     return pages <= 10 ? pages : 10
   }
   else { return 0 }
@@ -95,10 +93,10 @@ const searchKeyword = () => {
     </div>
     <div v-if="searchData" m="l-24 lt-sm:l-0" p="2" class="max-w-2xl">
       <div text="left sm gray-500" m="b-2">
-        找到约 {{ searchData['总数'] }} 个结果
+        找到约 {{ searchData['total'] }} 个结果
       </div>
-      <template v-if="searchData['总数']">
-        <ResultItem v-for="(item, i) in searchData['结果']" :key="i" :keywords="keywords" se :result="item" />
+      <template v-if="searchData['total']">
+        <ResultItem v-for="(item, i) in searchData['data']" :key="i" se :result="item" />
       </template>
 
       <div v-else text="left" m="t-8">
