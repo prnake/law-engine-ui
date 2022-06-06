@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-defineProps<{
+const props = defineProps<{
   modelValue: string
   button: boolean
 }>()
 defineEmits(['update_keyword','enter'])
 const { t } = useI18n()
 const showSuggest = function() { console.log(123)}
+
+const keyword = ref('');
+keyword.value = props.modelValue;
 
 import { onMounted, ref } from 'vue'
 
@@ -45,21 +48,21 @@ onMounted(() => {
     rounded="full"
   >
     <el-autocomplete
-        v-model="modelValue"
+        v-model="keyword"
         :fetch-suggestions="querySearch"
         :trigger-on-focus="false"
         clearable
         class="sese-input"
         :prefix-icon="Search"
         @select="handleSelect"
-        @keydown.enter="$emit('update_keyword', modelValue);$emit('enter')"
+        @keydown.enter="$emit('update_keyword', keyword);$emit('enter')"
       />
   </div>
   <div m="b-18" v-if="button">
       <button
         class="sese-btn m-3 text-sm btn "
         bg="gradient-to-r"
-        @click="$emit('update_keyword', modelValue);$emit('enter')"
+        @click="$emit('update_keyword', keyword);$emit('enter')"
       >
         {{ t('button.search') }}
       </button>
