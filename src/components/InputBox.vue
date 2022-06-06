@@ -11,8 +11,8 @@ import { onMounted, ref } from 'vue'
 
 import { search_complete } from '~/api'
 
-const querySearch = (queryString: string, cb: any) => {
-  const results = search_complete({
+const querySearch = async (queryString: string, cb: any) => {
+  const results = await search_complete({
     q: queryString,
   });
   // call callback function to return suggestions
