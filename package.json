@@ -16,6 +16,7 @@
     "@gtm-support/vue-gtm": "^1.6.0",
     "@vueuse/core": "^8.5.0",
     "@vueuse/head": "^0.7.6",
+    "element-plus": "^2.2.4",
     "nprogress": "^0.2.0",
     "ohmyfetch": "^0.4.18",
     "pinia": "^2.0.14",

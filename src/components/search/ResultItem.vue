@@ -23,9 +23,9 @@ const highlightedText = (content: string, keywords: string[]) => {
 
 <template>
   <div class="result-item relative" flex="~ col" text="left" m="b-4">
-    <a :href="result['id']" target="_blank" class="block truncate">
-      <cite class="not-italic" text="xs">{{ result['网址'] }}</cite>
-    </a>
+    <!-- <a :href="result['id']" target="_blank" class="block truncate">
+      <cite class="not-italic" text="xs">{{ result['title'] }}</cite>
+    </a> -->
     <!-- <template v-if="result['highlight']"> -->
       <a
         :href="result['id']" target="_blank"
@@ -35,6 +35,7 @@ const highlightedText = (content: string, keywords: string[]) => {
           {{ result['title'] }}
         </h3>
       </a>
+      <cite class="not-italic" text="xs">{{ result['tag'].join("｜") }}</cite>
       <p text="sm" v-html="result['highlight'].join('......')" />
     <!-- </template>
     <div v-else>

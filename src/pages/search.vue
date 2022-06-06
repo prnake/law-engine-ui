@@ -86,7 +86,7 @@ const searchKeyword = () => {
       <a class="cursor-pointer inline-flex justify-center lt-sm:absolute -top-5 left-5" m="r-3 b-1" @click="() => { router.push('/') }">
         <img class="w-16 filter drop-shadow" :src="bannerUrl" alt="Rimo And XiaoYun">
       </a>
-      <InputBox v-model="keyword" class="inline-flex" :enter="() => { searchKeyword() }" />
+      <InputBox @update_keyword="(w) => {keyword = w}" v-model="keyword" class="inline-flex" @enter="() => { searchKeyword() }" :button="false"/>
       <button m="l-2" p="2" class="icon-btn flex justify-center items-center border rounded rounded-full !outline-none" @click="searchKeyword()">
         <div i-ri-heart-line />
       </button>

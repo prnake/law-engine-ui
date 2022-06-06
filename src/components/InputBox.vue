@@ -1,10 +1,40 @@
 <script lang="ts" setup>
 defineProps<{
   modelValue: string
-  enter: (e: KeyboardEvent) => void
+  button: boolean
 }>()
-defineEmits(['update:modelValue'])
+defineEmits(['update_keyword','enter'])
 const { t } = useI18n()
+const showSuggest = function() { console.log(123)}
+
+import { onMounted, ref } from 'vue'
+
+import { search_complete } from '~/api'
+
+const querySearch = (queryString: string, cb: any) => {
+  const results = search_complete({
+    q: queryString,
+  });
+  // call callback function to return suggestions
+  if(results && results.data)
+    cb(results.data);
+  else
+    cb([]);
+}
+// const querySearch = (queryString: string, cb: any) => {
+//   const results = queryString
+//     ? restaurants.value.filter(createFilter(queryString))
+//     : restaurants.value
+//   // call callback function to return suggestions
+//   cb(results)
+// }
+
+const handleSelect = (item: RestaurantItem) => {
+  console.log(item)
+}
+
+onMounted(() => {
+})
 </script>
 
 <template>
@@ -12,25 +42,28 @@ const { t } = useI18n()
     class="sese-search-wrapper wrapper relative flex justify-center items-center"
     p="2"
     m="y-4"
-    border="~ rounded gray-300 dark:gray-700"
     rounded="full"
   >
-    <div i-ri-search-line class="inline-flex ml-2" />
-    <input
-      id="input"
-      class="sese-input"
-      :value="modelValue"
-      m="x-2"
-      :aria-label="t('placeholder.search')"
-      type="text"
-      autocomplete="false"
-      bg="transparent"
-      outline="none active:none"
-      autofocus
-      @input="$emit('update:modelValue', ($event.target as any).value)"
-      @keydown.enter="enter"
-    >
+    <el-autocomplete
+        v-model="modelValue"
+        :fetch-suggestions="querySearch"
+        :trigger-on-focus="false"
+        clearable
+        class="sese-input"
+        :prefix-icon="Search"
+        @select="handleSelect"
+        @keydown.enter="$emit('update_keyword', modelValue);$emit('enter')"
+      />
   </div>
+  <div m="b-18" v-if="button">
+      <button
+        class="sese-btn m-3 text-sm btn "
+        bg="gradient-to-r"
+        @click="$emit('update_keyword', modelValue);$emit('enter')"
+      >
+        {{ t('button.search') }}
+      </button>
+    </div>
 </template>
 
 <style lang="scss">

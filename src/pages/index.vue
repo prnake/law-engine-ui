@@ -15,17 +15,9 @@ const { t } = useI18n()
   <div class="flex flex-col justify-center items-center" h="full">
     <img width="280" height="156" class="w-70 filter drop-shadow" m="-b-4" :src="bannerUrl" alt="Rimo And XiaoYun">
 
-    <InputBox v-model="keyword" m="t-0 b-4" :enter="() => { enter(keyword) }" />
+    <InputBox @update_keyword="(w) => {keyword = w}" v-model="keyword" m="t-0 b-4" @enter="() => { enter(keyword) }" :button="true" />
 
-    <div m="b-18">
-      <button
-        class="sese-btn m-3 text-sm btn "
-        bg="gradient-to-r"
-        @click="enter(keyword)"
-      >
-        {{ t('button.search') }}
-      </button>
-    </div>
+    
   </div>
   <Footer />
 </template>
