@@ -66,6 +66,14 @@ onMounted(() => {
       >
         {{ t('button.search') }}
       </button>
+
+      <button
+        class="sese-btn m-3 text-sm btn "
+        bg="gradient-to-r"
+        @click="$router.push(`/prosearch`)"
+      >
+        {{ t('button.prosearch') }}
+      </button>
     </div>
 </template>
 

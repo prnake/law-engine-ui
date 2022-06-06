@@ -35,8 +35,8 @@ const highlightedText = (content: string, keywords: string[]) => {
           {{ result['title'] }}
         </h3>
       </a>
-      <cite class="not-italic" text="xs">{{ result['tag'].join("｜") }}</cite>
-      <p text="sm" v-html="result['highlight'].join('......')" />
+      <cite class="not-italic" text="xs" v-html="result['tag'].join('｜')"/>
+      <p text="sm" v-html="result['highlight']['全文.ik_max_analyzer']?.join('......')" />
     <!-- </template>
     <div v-else>
       <div class="inline-flex justify-start items-center border" p="1" m="1">
