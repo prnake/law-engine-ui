@@ -5,10 +5,13 @@ export const useEnter = () => {
   const router = useRouter()
 
   return {
-    enter(keyword: string) {
+    enter(keyword: string, pro: boolean = false) {
       if (keyword) {
         search.setNewKeyword(keyword)
-        router.push(`/search?q=${encodeURIComponent(keyword)}`)
+        if (pro)
+          router.push(`/prosearch?q=${encodeURIComponent(keyword)}`)
+        else
+          router.push(`/search?q=${encodeURIComponent(keyword)}`)
       }
     },
   }
