@@ -1,10 +1,22 @@
 <script lang="ts" setup>
 import type { SearchResult } from '~/api/types'
 
-defineProps<{
+const props = defineProps<{
   result: SearchResult
 }>()
 
+const gen_data = function (data) {
+  let res = [];
+  for(let i in data) {
+    res.push({
+      "name": i,
+      "data": data[i]
+    });
+  }
+  return res.sort((a, b) => a.data.length - b.data.length);
+};
+
+const dialogTableVisible = ref(false);
 /**
  * 高亮文本
  */
@@ -22,13 +34,20 @@ const highlightedText = (content: string, keywords: string[]) => {
 </script>
 
 <template>
+  <el-dialog v-model="dialogTableVisible" title="文书内容" width="80%">
+    <el-table :data="gen_data(result['source'])">
+      <el-table-column property="name" label="名称" min-width="50" />
+      <el-table-column property="data" label="内容" min-width="180" />
+    </el-table>
+  </el-dialog>
+
   <div class="result-item relative" flex="~ col" text="left" m="b-4">
     <!-- <a :href="result['id']" target="_blank" class="block truncate">
       <cite class="not-italic" text="xs">{{ result['title'] }}</cite>
     </a> -->
     <!-- <template v-if="result['highlight']"> -->
       <a
-        :href="result['id']" target="_blank"
+        @click="dialogTableVisible = true"
         class="text-lg text-blue-900 hover:underline dark:text-blue-500"
       >
         <h3 class="top-0 truncate">

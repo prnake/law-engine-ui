@@ -87,8 +87,8 @@ const searchKeyword = () => {
         <img class="w-16 filter drop-shadow" :src="bannerUrl" alt="Rimo And XiaoYun">
       </a>
       <InputBox @update_keyword="(w) => {keyword = w}" v-model="keyword" class="inline-flex" @enter="() => { searchKeyword() }" :button="false"/>
-      <button m="l-2" p="2" class="icon-btn flex justify-center items-center border rounded rounded-full !outline-none" @click="searchKeyword()">
-        <div i-ri-heart-line />
+      <button m="l-2" p="2" class="icon-btn flex justify-center items-center border rounded rounded-full !outline-none" @click="() => { searchKeyword() }">
+        <div i-ri-heart-line @click="() => { searchKeyword() }"/>
       </button>
     </div>
     <div v-if="searchData" m="l-24 lt-sm:l-0" p="2" class="max-w-2xl">

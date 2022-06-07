@@ -5,7 +5,7 @@ button:
   home: 首页
   toggle_dark: 切换深色模式
   toggle_langs: 切换语言
-  search: 开始色色
+  search: 搜索
   prosearch: 高级检索
 
 intro:
@@ -20,6 +20,6 @@ placeholder:
   search: 搜索
 
 sese:
-  title: 色色引擎
+  title: 法律文书搜索引擎
 
 copyright: 版权

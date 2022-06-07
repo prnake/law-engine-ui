@@ -4,11 +4,31 @@ import type { SearchData } from '~/api/types'
 import { useEnter } from '~/composables/search'
 import { useSearchStore } from '~/stores/search'
 
+
+import { search_complete } from '~/api'
+
+const querySearch = async (queryString: string, cb: any) => {
+  const results = await search_complete({
+    q: queryString,
+    fields: "法院名称"
+  });
+  // call callback function to return suggestions
+  if(results && results.data)
+    cb(results.data);
+  else
+    cb([]);
+}
+
 import { bannerUrl } from '~/config'
 
 const { t } = useI18n()
 const { enter } = useEnter()
 const route = useRoute()
+let input1 = ref('')
+let input2 = ref('')
+let input3 = ref('')
+let must = {}
+const add_must = function (a,b) { console.log(must);must[a] = b} ;
 
 const searchStore = useSearchStore()
 searchStore.setNewKeyword(route.query.q?.toString() || '')
@@ -26,9 +46,12 @@ useHead({
 
 const searchByParams = async () => {
   searchStore.isLoading = true
+  add_must('完整罪名',input2.value)
+  add_must('法院名称',input1.value)
   const data = await search({
     q: keyword.value,
     slice: slice.value,
+    must: JSON.stringify(must),
   })
   searchStore.isLoading = false
   searchData.value = data
@@ -45,7 +68,7 @@ const goToPage = (page: number) => {
   slice.value = `${(curPage.value - 1) * pageNumber.value}:${curPage.value * pageNumber.value}`
 
   router.push({
-    path: '/search',
+    path: '/prosearch',
     query: {
       q: keyword.value,
       slice: slice.value,
@@ -87,10 +110,34 @@ const searchKeyword = () => {
         <img class="w-16 filter drop-shadow" :src="bannerUrl" alt="Rimo And XiaoYun">
       </a>
       <ProInputBox @update_keyword="(w) => {keyword = w}" v-model="keyword" class="inline-flex" @enter="() => { searchKeyword() }" :button="false"/>
-      <button m="l-2" p="2" class="icon-btn flex justify-center items-center border rounded rounded-full !outline-none" @click="searchKeyword()">
+      <button m="l-2" p="2" class="icon-btn flex justify-center items-center border rounded rounded-full !outline-none" @click="() => { searchKeyword() }">
         <div i-ri-heart-line />
       </button>
     </div>
+    <el-row :gutter="0">
+      <span class="ml-3 w-18 text-gray-600 inline-flex items-center"
+        >法院名称</span
+      >
+      <el-autocomplete
+        v-model="input1"
+        :fetch-suggestions="querySearch"
+        class="w-50 m-2"
+        placeholder="Type something"
+        :prefix-icon="Search"
+      />
+    </el-row>
+    <el-row :gutter="0">
+      <span class="ml-3 w-18 text-gray-600 inline-flex items-center"
+        >完整罪名</span
+      >
+      <el-autocomplete
+        v-model="input2"
+        :fetch-suggestions="querySearch"
+        class="w-50 m-2"
+        placeholder="Type something"
+        :prefix-icon="Search"
+      />
+    </el-row>
     <div v-if="searchData" m="l-24 lt-sm:l-0" p="2" class="max-w-2xl">
       <div text="left sm gray-500" m="b-2">
         找到约 {{ searchData['total'] }} 个结果
